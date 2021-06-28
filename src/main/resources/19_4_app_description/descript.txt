@@ -1,3 +1,0 @@
-Kodilla exercise 19.4
-
-I would like to explain what technologies are contained my application which is simply named "Task". My application is using MySQL database which stores task entries. These entries comprises of just three fields: id, title and description. The application was developed with the frameworks: Spring and Hibernate. The following REST programming interface methods are accepted by the application, GET, POST, DELETE and PUT.
