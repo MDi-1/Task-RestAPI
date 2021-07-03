@@ -1,5 +1,6 @@
 package com.crud.tasks.controller;
 
+import com.crud.tasks.client.DtoNotFoundException;
 import com.crud.tasks.client.TrelloClient;
 import com.crud.tasks.domain.TrelloBoardDto;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ public class TrelloController {
     private final TrelloClient trelloClient;
 
     @GetMapping("getTrelloBoards")
-    public void getTrelloBoards() {
-        List<TrelloBoardDto> boards = trelloClient.getTrelloBoards();
+    public void getTrelloBoards() throws DtoNotFoundException {
+        List<TrelloBoardDto> boards = trelloClient.filterBoards();
         boards.forEach(trelloBoardDto -> System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName()));
     }
 }
