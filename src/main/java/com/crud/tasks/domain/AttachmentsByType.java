@@ -6,9 +6,8 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BadgesDto {
+public class AttachmentsByType {
 
-    @JsonProperty("votes")
-    private int votes;
-    private AttachmentsByTypeDto attachmentsByTypeDto;
+    @JsonProperty("trello")
+    private Trello trello;
 }

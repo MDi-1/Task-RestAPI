@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TrelloDto {
+public class Trello {
 
     @JsonProperty("board")
     private int board;
