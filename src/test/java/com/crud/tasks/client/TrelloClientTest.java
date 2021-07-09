@@ -9,17 +9,22 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
+import static java.util.Optional.ofNullable;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class TrelloClientTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TrelloClient.class);
 
     @InjectMocks
     private TrelloClient trelloClient;
@@ -66,4 +71,45 @@ class TrelloClientTest {
         assertEquals("Test task", newCard.getName());
         assertEquals("http://test.com", newCard.getShortUrl());
     }
+
+    @Test
+    public void shouldReturnEmptyList_attempt1() throws URISyntaxException {
+        URI url = new URI("http://test.com/members/test/boards?key=test&token=test&fields=name,id&lists=all");
+
+        try {
+            TrelloBoardDto[] boardsResponse = restTemplate.getForObject(url, TrelloBoardDto[].class);
+            //List<TrelloBoardDto> list = Arrays.asList(ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]));
+            TrelloBoardDto[] x = ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]);
+            // zadanie w trakcie
+
+        } catch (RestClientException e) {
+            LOGGER.error(e.getMessage(), e);
+            //return Collections.emptyList();
+        }
+    }
+
+    @Test
+    public void shouldReturnEmptyList_attempt2() throws URISyntaxException {
+        when(trelloConfig.getTrelloApiEndpoint()).thenReturn("http://test.com");
+        when(trelloConfig.getTrelloAppKey()).thenReturn("test");
+        when(trelloConfig.getTrelloToken()).thenReturn("test");
+        when(trelloConfig.getTrelloUser()).thenReturn("test");
+        URI url = new URI("http://test.com/members/test/boards?key=test&token=test&fields=name,id&lists=all");
+        List<TrelloBoardDto> boardList = null;
+
+        try {
+            TrelloBoardDto[] boardsResponse = restTemplate.getForObject(url, TrelloBoardDto[].class);
+            boardList = Arrays.asList(ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]));
+        } catch (RestClientException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        when(restTemplate.getForObject(url, TrelloBoardDto[].class)).thenReturn(null);
+
+        List<TrelloBoardDto> emptyList = trelloClient.getBoards();
+        // then
+        assertEquals(0, emptyList.size());
+
+    }
+
 }
