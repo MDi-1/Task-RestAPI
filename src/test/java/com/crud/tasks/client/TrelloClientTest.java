@@ -91,7 +91,5 @@ class TrelloClientTest {
         List<TrelloBoardDto> emptyList = trelloClient.getBoards();
         // then
         assertEquals(0, emptyList.size());
-
     }
-
 }
