@@ -73,43 +73,23 @@ class TrelloClientTest {
     }
 
     @Test
-    public void shouldReturnEmptyList_attempt1() throws URISyntaxException {
-        URI url = new URI("http://test.com/members/test/boards?key=test&token=test&fields=name,id&lists=all");
-
-        try {
-            TrelloBoardDto[] boardsResponse = restTemplate.getForObject(url, TrelloBoardDto[].class);
-            //List<TrelloBoardDto> list = Arrays.asList(ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]));
-            TrelloBoardDto[] x = ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]);
-            // zadanie w trakcie
-
-        } catch (RestClientException e) {
-            LOGGER.error(e.getMessage(), e);
-            //return Collections.emptyList();
-        }
-    }
-
-    @Test
-    public void shouldReturnEmptyList_attempt2() throws URISyntaxException {
+    public void shouldReturnEmptyList() throws URISyntaxException {
+        // given
         when(trelloConfig.getTrelloApiEndpoint()).thenReturn("http://test.com");
         when(trelloConfig.getTrelloAppKey()).thenReturn("test");
         when(trelloConfig.getTrelloToken()).thenReturn("test");
         when(trelloConfig.getTrelloUser()).thenReturn("test");
         URI url = new URI("http://test.com/members/test/boards?key=test&token=test&fields=name,id&lists=all");
-        List<TrelloBoardDto> boardList = null;
-
+        // when
         try {
             TrelloBoardDto[] boardsResponse = restTemplate.getForObject(url, TrelloBoardDto[].class);
-            boardList = Arrays.asList(ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]));
+            Arrays.asList(ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]));
         } catch (RestClientException e) {
             LOGGER.error(e.getMessage(), e);
         }
-
         when(restTemplate.getForObject(url, TrelloBoardDto[].class)).thenReturn(null);
-
         List<TrelloBoardDto> emptyList = trelloClient.getBoards();
         // then
         assertEquals(0, emptyList.size());
-
     }
-
 }
