@@ -1,9 +1,6 @@
 package com.crud.tasks.mapper;
 
-import com.crud.tasks.domain.TrelloBoard;
-import com.crud.tasks.domain.TrelloBoardDto;
-import com.crud.tasks.domain.TrelloList;
-import com.crud.tasks.domain.TrelloListDto;
+import com.crud.tasks.domain.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -68,13 +65,30 @@ class TrelloMapperTest {
         lists.add(list);
         // when
         List<TrelloListDto> listDtos = mapper.mapToListDto(lists);
+        // then
+        assertEquals("1004", listDtos.get(0).getId());
+        assertEquals("the_name", listDtos.get(0).getName());
     }
 
     @Test
     void mapToCardDto() {
+        // given
+        TrelloCard card = new TrelloCard("card1", "some description", "pos", "1005");
+        // when
+        TrelloCardDto cardDto = mapper.mapToCardDto(card);
+        // then
+        assertEquals("card1", cardDto.getName());
+        assertEquals("some description", cardDto.getDescription());
     }
 
     @Test
     void mapToCard() {
+        // given
+        TrelloCardDto cardDto = new TrelloCardDto("card2", "some description 2", "pos", "1006");
+        // when
+        TrelloCard card = mapper.mapToCard(cardDto);
+        // then
+        assertEquals("card2", card.getName());
+        assertEquals("some description 2", card.getDescription());
     }
 }
