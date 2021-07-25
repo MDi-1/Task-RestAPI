@@ -31,7 +31,6 @@ class TrelloControllerTest {
     void shouldFetchEmptyTrelloBoards() throws Exception {
         // Given
         when(trelloFacade.fetchTrelloBoards()).thenReturn(List.of());
-
         //When & Then
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/v1/trello/getTrelloBoards")
@@ -82,20 +81,3 @@ class TrelloControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.shortUrl", Matchers.is("http://test.com")));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// x
