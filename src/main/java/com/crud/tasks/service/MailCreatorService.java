@@ -43,4 +43,17 @@ public class MailCreatorService {
       context.setVariable("is_friend", true);
       return templateEngine.process("mail/created-trello-card-mail", context);
    }
+
+   public String buildSecondEmail(String message) {
+
+      Context context = new Context();
+      context.setVariable("message", message);
+      context.setVariable("show_button", true);
+      context.setVariable("tasks_url", "http://localhost:8888/tasks_frontend/");
+      context.setVariable("button", "check website for current tasks");
+      context.setVariable("admin_config", adminConfig);
+      context.setVariable("is_friend", false);
+      context.setVariable("goodbye_msg",  "Have nice day");
+      return templateEngine.process("mail/second-mail", context);
+   }
 }
