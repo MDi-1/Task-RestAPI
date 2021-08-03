@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringJUnitWebConfig
 @WebMvcTest(TaskController.class)
@@ -61,7 +61,7 @@ class TaskControllerTest {
         when(controller.getTask(2L)).thenReturn(dto);
         // when & then
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/v1/tasks/2")
+                .get("/v1/task/2")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().is(200))
             .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(2)))
@@ -73,10 +73,10 @@ class TaskControllerTest {
     void testDeleteTask() throws Exception{
         // given
         TaskDto dto = new TaskDto(3L, "test title 3", "test content 3");
-        when(controller.deleteTask(3L)).thenReturn(dto);
         // when & then
+        //verify(service, times(1)).delete(3L);
         mockMvc.perform(MockMvcRequestBuilders
-                .delete("/v1/tasks/3")
+                .delete("/v1/task/3")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().is(200));
     }
@@ -91,7 +91,7 @@ class TaskControllerTest {
         String json = gson.toJson(dtoIn);
         // when & then
         mockMvc.perform(MockMvcRequestBuilders
-                .put("/v1/tasks")
+                .put("/v1/task")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8").content(json))
             .andExpect(MockMvcResultMatchers.status().is(200))
@@ -110,7 +110,7 @@ class TaskControllerTest {
         String json = gson.toJson(dtoIn);
         // when & then
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/v1/tasks")
+                .post("/v1/task")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8").content(json))
                 .andExpect(MockMvcResultMatchers.status().is(200))
