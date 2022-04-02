@@ -8,17 +8,15 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class TrelloMapper {
 
-    public List<TrelloBoard> mapToBoards(final List<TrelloBoardDto> trelloBoardDto) {
-        return trelloBoardDto.stream()
-                .map(trelloBoard ->
-                        new TrelloBoard(trelloBoard.getId(), trelloBoard.getName(), mapToList(trelloBoard.getLists())))
+    public List<TrelloBoard> mapToBoards(final List<TrelloBoardDto> trelloBoardDtoList) {
+        return trelloBoardDtoList.stream()
+                .map(boardDto -> new TrelloBoard(boardDto.getId(), boardDto.getName(), mapToList(boardDto.getLists())))
                 .collect(toList());
     }
 
     public List<TrelloBoardDto> mapToBoardsDto(final List<TrelloBoard> trelloBoards) {
         return trelloBoards.stream()
-                .map(trelloBoard ->
-                   new TrelloBoardDto(trelloBoard.getId(), trelloBoard.getName(), mapToListDto(trelloBoard.getLists())))
+                .map(board -> new TrelloBoardDto(board.getId(), board.getName(), mapToListDto(board.getLists())))
                 .collect(toList());
     }
 
